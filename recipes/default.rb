@@ -7,12 +7,15 @@
 # All rights reserved - Do Not Redistribute
 #
 
-node.override.build_essential.compiletime = true
 include_recipe 'build-essential'
-include_recipe 'drupal'
-include_recipe 'apache2'
+include_recipe 'drupal::mass_virtual'
 include_recipe 'apache2::mod_php5'
 include_recipe 'postfix'
+
+directory '/var/www/sites' do
+  owner 'www-data'
+  group 'www-data'
+end
 
 drupal_config = data_bag_item('drupal', 'default').to_hash
 drupal_settings "#{node.drupal.settings_dir}/default" do
